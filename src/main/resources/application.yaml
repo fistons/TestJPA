@@ -1,0 +1,6 @@
+spring:
+  datasource:
+    url: jdbc:h2:~/test-test-test-delete-me
+  h2:
+    console:
+      enabled: true
