@@ -1,7 +1,12 @@
 package net.pedr0.test.jpa.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.NoArgsConstructor;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -13,6 +18,10 @@ import java.util.Set;
 
 @Data
 @Entity
+@Builder
+@AllArgsConstructor
+@NoArgsConstructor
+@EqualsAndHashCode(exclude = "documents")
 public class DocGroup {
 
     @Id
@@ -20,10 +29,10 @@ public class DocGroup {
     private Integer id;
     private String name;
 
-    @ManyToMany
+    @ManyToMany(cascade = CascadeType.REFRESH)
     private Set<Metadata> metadatas;
 
-    @OneToMany(mappedBy = "pk.group")
+    @OneToMany(mappedBy = "pk.group", cascade = CascadeType.ALL)
     @OrderBy("docOrder")
     private Set<DocumentAssociation> documents;
 
