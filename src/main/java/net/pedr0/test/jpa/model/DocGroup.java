@@ -13,7 +13,7 @@ import java.util.Set;
 
 @Data
 @Entity
-public class DocumentGroup {
+public class DocGroup {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -23,8 +23,8 @@ public class DocumentGroup {
     @ManyToMany
     private Set<Metadata> metadatas;
 
-    @OneToMany
-    @OrderBy("order")
+    @OneToMany(mappedBy = "pk.group")
+    @OrderBy("docOrder")
     private Set<DocumentAssociation> documents;
 
 }

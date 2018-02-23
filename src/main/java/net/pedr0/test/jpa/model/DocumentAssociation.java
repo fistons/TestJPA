@@ -2,26 +2,25 @@ package net.pedr0.test.jpa.model;
 
 import lombok.Data;
 
-import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.ManyToOne;
 
 @Data
 @Entity
 public class DocumentAssociation {
 
     @EmbeddedId
-    private DocumentAssociationPk id;
+    private DocumentAssociationPk pk;
 
-    @ManyToOne
-    private DocumentGroup documentGroup;
-    @ManyToOne
-    private Document document;
-
-    @Column
     private boolean byDefault;
-    @Column
-    private int order;
+    private int docOrder;
+
+    public Document getDocument() {
+        return this.pk.getDocument();
+    }
+
+    public DocGroup getGroup() {
+        return this.pk.getGroup();
+    }
 
 }
