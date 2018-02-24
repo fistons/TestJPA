@@ -18,6 +18,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -81,8 +82,13 @@ public class Application implements CommandLineRunner {
           .map(DocumentAssociation::getDocument)
           .map(Document::getName)
           .collect(Collectors.joining(",")));
-    }
 
+        try {
+            deleteDocuments(group.getId());
+        } catch (StackOverflowError ex) {
+            LOGGER.error("StackOverflowError, WTF?", ex);
+        }
+    }
     /**
      * Create initial metadata, documents and group.
      *
@@ -122,5 +128,12 @@ public class Application implements CommandLineRunner {
         copy.setId(null);
         copy.setName("Cloned group");
         return groupRepository.save(copy);
+    }
+
+    @Transactional
+    public void deleteDocuments(Integer id) {
+        DocGroup group = groupRepository.findOne(id);
+        group.getDocuments().clear();
+        groupRepository.save(group);
     }
 }
